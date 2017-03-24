@@ -9,13 +9,15 @@ import (
 //manual testing
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	d := NewDeck()
-	fmt.Println(len(d))
-	fmt.Println(d)
-	fmt.Println(d.Pull())
-	fmt.Println(d.Pull())
-	fmt.Println(d.Pull())
-	fmt.Println(d.Pull())
-	fmt.Println(len(d))
-	fmt.Println(d)
+	g := NewGame()
+	fmt.Println(g.player)
+	fmt.Println(g.dealer)
+	for g.player.score.value < 18 {
+		g.Hit()
+	}
+	if g.player.score.value < 22 {
+		g.Stand()
+	}
+	fmt.Println(g.player)
+	fmt.Println(g.dealer)
 }
