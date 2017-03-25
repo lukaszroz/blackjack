@@ -4,6 +4,7 @@ type Game struct {
 	Player, dealer Hand
 	Dealer         Hand `json:"Dealer"`
 	deck           Deck
+	ID             int
 }
 
 func NewGame() Game {
