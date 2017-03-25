@@ -1,6 +1,9 @@
 package main
 
-import "sync"
+import (
+	"sync"
+	"errors"
+)
 
 type Game struct {
 	sync.Mutex
@@ -20,25 +23,28 @@ func NewGame() Game {
 	return g
 }
 
+const game_finished = "Game is finished"
+
 // give player another card
-// if game is finished, do nothing
-func (g *Game) Hit() {
+// if game is finished, return an error
+func (g *Game) Hit() error {
 	if g.IsFinished {
-		return
+		return errors.New(game_finished)
 	}
 	g.Player.AddCard(g.deck.Pull())
 	if g.Player.IsBust() {
 		g.IsFinished = true
 	}
+	return nil
 }
 
 const STAND_LIMIT = 17
 
 // resolve dealer hand
-// if game is finished, do nothing
-func (g *Game) Stand() {
+// if game is finished, return an error
+func (g *Game) Stand() error {
 	if g.IsFinished {
-		return
+		return errors.New(game_finished)
 	}
 	g.IsFinished = true
 	for g.dealer.Score.value < STAND_LIMIT {
@@ -49,4 +55,5 @@ func (g *Game) Stand() {
 	//determine game outcome
 	g.IsTie = g.dealer.Score.value == g.Player.Score.value
 	g.HasPlayerWon = g.Player.Score.value > g.dealer.Score.value || g.dealer.IsBust()
+	return nil
 }

@@ -67,26 +67,25 @@ func GetGame(w http.ResponseWriter, r *http.Request) {
 	render.JSON(w, r, game)
 }
 
-func gameAction(w http.ResponseWriter, r *http.Request, handle func(g *Game)) {
+func gameAction(w http.ResponseWriter, r *http.Request, handle func(g *Game) error) {
 	game := r.Context().Value("game").(*Game)
 	game.Lock()
 	defer game.Unlock()
-	if game.IsFinished {
-		http.Error(w, "Game is finished", 400)
+	if e := handle(game); e != nil {
+		http.Error(w, e.Error(), 400)
 		return
 	}
-	handle(game)
 	render.JSON(w, r, game)
 }
 func Hit(w http.ResponseWriter, r *http.Request) {
-	gameAction(w, r, func (g *Game) {
-		g.Hit()
+	gameAction(w, r, func (g *Game) error {
+		return g.Hit()
 	})
 }
 
 func Stand(w http.ResponseWriter, r *http.Request) {
-	gameAction(w, r, func (g *Game) {
-		g.Stand()
+	gameAction(w, r, func (g *Game) error {
+		return g.Stand()
 	})
 }
 
