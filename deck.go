@@ -1,6 +1,9 @@
 package main
 
-import "math/rand"
+import (
+	"math/rand"
+	"time"
+)
 
 type Deck []Card
 
@@ -26,6 +29,10 @@ func NewDeck() Deck {
 		)
 	}
 	return d
+}
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
 }
 
 //TODO: empty deck
