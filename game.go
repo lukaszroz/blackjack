@@ -1,25 +1,28 @@
 package main
 
 type Game struct {
-	player, dealer Hand
-	deck Deck
+	Player, dealer Hand
+	Dealer         Hand `json:"Dealer"`
+	deck           Deck
 }
 
 func NewGame() Game {
-	g := Game{NewHand(), NewHand(), NewDeck()}
-	g.player.AddCard(g.deck.Pull())
+	g := Game{Player: NewHand(), dealer: NewHand(), deck: NewDeck()}
+	g.Player.AddCard(g.deck.Pull())
 	g.dealer.AddCard(g.deck.Pull())
-	g.player.AddCard(g.deck.Pull())
+	g.Dealer = g.dealer
+	g.Player.AddCard(g.deck.Pull())
 	g.dealer.AddCard(g.deck.Pull())
 	return g
 }
 
 func (g *Game) Hit() {
-	g.player.AddCard(g.deck.Pull())
+	g.Player.AddCard(g.deck.Pull())
 }
 
 func (g *Game) Stand() {
-	for g.dealer.score.value < 17 {
+	for g.dealer.Score.value < 17 {
 		g.dealer.AddCard(g.deck.Pull())
 	}
+	g.Dealer = g.dealer
 }

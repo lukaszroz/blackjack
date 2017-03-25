@@ -1,9 +1,11 @@
 package main
 
+import "encoding/json"
+
 const LIMIT = 21
 
 type Score struct {
-	value int
+	value      int
 	deductions []int
 }
 
@@ -12,13 +14,17 @@ func NewScore() Score {
 }
 
 func (s *Score) AddCard(c Card) {
-	s.value += c.highValue
-	if c.highValue != c.lowValue {
-		s.deductions = append(s.deductions, c.highValue - c.lowValue)
+	s.value += c.HighValue
+	if c.HighValue != c.LowValue {
+		s.deductions = append(s.deductions, c.HighValue- c.LowValue)
 	}
 	for s.value > LIMIT && len(s.deductions) > 0 {
 		last := len(s.deductions) - 1
 		s.value -= s.deductions[last]
 		s.deductions = s.deductions[:last]
 	}
+}
+
+func (s Score) MarshalJSON() ([]byte, error) {
+	return json.Marshal(s.value)
 }

@@ -1,8 +1,8 @@
 package main
 
 type Hand struct {
-	cards []Card
-	score Score
+	Cards []Card
+	Score Score
 }
 
 func NewHand() Hand {
@@ -10,6 +10,10 @@ func NewHand() Hand {
 }
 
 func (h *Hand) AddCard(c Card) {
-	h.score.AddCard(c)
-	h.cards = append(h.cards, c)
+	h.Score.AddCard(c)
+	h.Cards = append(h.Cards, c)
+}
+
+func (h Hand) Copy() Hand {
+	return h
 }
