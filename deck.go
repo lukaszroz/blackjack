@@ -4,7 +4,7 @@ import "math/rand"
 
 type Deck []Card
 
-var suits = []string{"clubs", "diamonds", "hearts", "spades"}
+var suits = []string{"Clubs", "Diamonds", "Hearts", "Spades"}
 
 func NewDeck() Deck {
 	d := make(Deck, 0, 52)
