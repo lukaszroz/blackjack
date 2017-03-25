@@ -2,7 +2,7 @@ package main
 
 import "encoding/json"
 
-const LIMIT = 21
+const BUST_LIMIT = 21
 
 type Score struct {
 	value      int
@@ -18,7 +18,7 @@ func (s *Score) AddCard(c Card) {
 	if c.HighValue != c.LowValue {
 		s.deductions = append(s.deductions, c.HighValue- c.LowValue)
 	}
-	for s.value > LIMIT && len(s.deductions) > 0 {
+	for s.value > BUST_LIMIT && len(s.deductions) > 0 {
 		last := len(s.deductions) - 1
 		s.value -= s.deductions[last]
 		s.deductions = s.deductions[:last]

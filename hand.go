@@ -14,6 +14,6 @@ func (h *Hand) AddCard(c Card) {
 	h.Cards = append(h.Cards, c)
 }
 
-func (h Hand) Copy() Hand {
-	return h
+func (h *Hand) IsBust() bool {
+	return h.Score.value > BUST_LIMIT
 }

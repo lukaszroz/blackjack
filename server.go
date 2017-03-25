@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"github.com/pressly/chi"
 	"github.com/pressly/chi/render"
-	"sync"
 	"context"
 	"strconv"
+	"sync"
 )
 
 func main() {
@@ -35,9 +35,9 @@ func ListGames(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateGame(w http.ResponseWriter, r *http.Request) {
-	game := NewGame()
 	gamesLock.Lock()
 	defer gamesLock.Unlock()
+	game := NewGame()
 	game.ID = len(games)
 	games = append(games, &game)
 	render.JSON(w, r, game)
@@ -45,6 +45,8 @@ func CreateGame(w http.ResponseWriter, r *http.Request) {
 
 func GameCtx(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		gamesLock.Lock()
+		defer gamesLock.Unlock()
 		gameID := chi.URLParam(r, "gameID")
 		id, err := strconv.Atoi(gameID)
 
@@ -60,18 +62,31 @@ func GameCtx(next http.Handler) http.Handler {
 
 func GetGame(w http.ResponseWriter, r *http.Request) {
 	game := r.Context().Value("game").(*Game)
+	game.Lock()
+	defer game.Unlock()
 	render.JSON(w, r, game)
 }
 
-func Hit(w http.ResponseWriter, r *http.Request) {
+func gameAction(w http.ResponseWriter, r *http.Request, handle func(g *Game)) {
 	game := r.Context().Value("game").(*Game)
-	game.Hit()
+	game.Lock()
+	defer game.Unlock()
+	if game.IsFinished {
+		http.Error(w, "Game is finished", 400)
+		return
+	}
+	handle(game)
 	render.JSON(w, r, game)
+}
+func Hit(w http.ResponseWriter, r *http.Request) {
+	gameAction(w, r, func (g *Game) {
+		g.Hit()
+	})
 }
 
 func Stand(w http.ResponseWriter, r *http.Request) {
-	game := r.Context().Value("game").(*Game)
-	game.Stand()
-	render.JSON(w, r, game)
+	gameAction(w, r, func (g *Game) {
+		g.Stand()
+	})
 }
 
