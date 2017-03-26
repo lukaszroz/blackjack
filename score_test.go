@@ -6,19 +6,16 @@ import (
 
 func assert(s Score, value int, deductions []int, t *testing.T) {
 	if value != s.value {
-		t.Error("Expected ", value, " value got ", s.value)
-		return
+		t.Fatal("Expected ", value, " value got ", s.value)
 	}
 
 	if len(deductions) != len(s.deductions) {
-		t.Error("Expected ", deductions, " deductions, got ", s.deductions)
-		return
+		t.Fatal("Expected ", deductions, " deductions, got ", s.deductions)
 	}
 
 	for i := range deductions {
 		if deductions[i] != s.deductions[i] {
-			t.Error("Expected ", deductions, " deductions, got ", s.deductions)
-			return
+			t.Fatal("Expected ", deductions, " deductions, got ", s.deductions)
 		}
 	}
 }
