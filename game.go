@@ -1,8 +1,8 @@
 package main
 
 import (
-	"sync"
 	"errors"
+	"sync"
 )
 
 type Game struct {

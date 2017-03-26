@@ -1,14 +1,14 @@
 package main
 
 import (
-	"testing"
-	"os"
-	"net/http"
-	"net"
-	"log"
-	"io/ioutil"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"testing"
 )
 
 var addr string

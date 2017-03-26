@@ -1,13 +1,13 @@
 package main
 
 import (
-	"net/http"
-	"github.com/pressly/chi"
-	"github.com/pressly/chi/render"
 	"context"
+	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
+	"github.com/pressly/chi/render"
+	"net/http"
 	"strconv"
 	"sync"
-	"github.com/pressly/chi/middleware"
 )
 
 func main() {
