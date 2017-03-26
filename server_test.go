@@ -103,7 +103,7 @@ func TestStand(t *testing.T) {
 	g := game(t, b)
 	assertEquals(t, "Expected player to have %v cards, got %v", 2, len(g.Player.Cards))
 	if 2 > len(g.Dealer.Cards) {
-		t.Fatalf("Expected dealer to have more than %v cards, got %v", 2, len(g.Dealer.Cards))
+		t.Fatalf("Expected dealer to have at least %v cards, got %v", 2, len(g.Dealer.Cards))
 	}
 	if 17 > g.Dealer.Score.value {
 		t.Fatalf("Expected dealer to have higher than %v score, got %v", 17, g.Dealer.Score.value)
