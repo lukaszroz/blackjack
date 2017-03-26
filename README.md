@@ -11,6 +11,7 @@ go build
 ./blackjack
 
 ## API
+[Examples](EXAMPLE.md)
 ### Game JSON
 ```JSON
 {
