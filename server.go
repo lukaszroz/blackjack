@@ -2,16 +2,18 @@ package main
 
 import (
 	"context"
-	"github.com/pressly/chi"
-	"github.com/pressly/chi/middleware"
-	"github.com/pressly/chi/render"
+	"log"
 	"net/http"
 	"strconv"
 	"sync"
+
+	"github.com/pressly/chi"
+	"github.com/pressly/chi/middleware"
+	"github.com/pressly/chi/render"
 )
 
 func main() {
-	http.ListenAndServe(":3333", newServer().router)
+	log.Fatal(http.ListenAndServe(":3333", newServer().router))
 }
 
 type server struct {
