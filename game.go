@@ -6,7 +6,7 @@ import (
 )
 
 type Game struct {
-	sync.Mutex
+	sync.RWMutex
 	Player, dealer, Dealer          Hand
 	deck                            Deck
 	ID                              int
