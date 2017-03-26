@@ -103,12 +103,10 @@ func TestStand(t *testing.T) {
 	g := game(t, b)
 	assertEquals(t, "Expected player to have %v cards, got %v", 2, len(g.Player.Cards))
 	if 2 > len(g.Dealer.Cards) {
-		t.Errorf("Expected dealer to have more than %v cards, got %v", 2, len(g.Dealer.Cards))
-		t.FailNow()
+		t.Fatalf("Expected dealer to have more than %v cards, got %v", 2, len(g.Dealer.Cards))
 	}
 	if 17 > g.Dealer.Score.value {
-		t.Errorf("Expected dealer to have higher than %v score, got %v", 17, g.Dealer.Score.value)
-		t.FailNow()
+		t.Fatalf("Expected dealer to have higher than %v score, got %v", 17, g.Dealer.Score.value)
 	}
 	assertIsFinished(t, g, true)
 }
@@ -157,8 +155,7 @@ func listenOnAvailablePort() {
 
 func assertEquals(t *testing.T, format string, expected, actual interface{}) {
 	if expected != actual {
-		t.Errorf(format, expected, actual)
-		t.FailNow()
+		t.Fatalf(format, expected, actual)
 	}
 }
 
@@ -175,8 +172,7 @@ func assertIsFinished(t *testing.T, g Game, f bool) {
 func get(t *testing.T, url string) *http.Response {
 	resp, err := http.Get(url)
 	if err != nil {
-		t.Error(err)
-		t.FailNow()
+		t.Fatal(err)
 	}
 	return resp
 }
@@ -184,8 +180,7 @@ func get(t *testing.T, url string) *http.Response {
 func body(t *testing.T, resp *http.Response) []byte {
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		t.Error(err)
-		t.FailNow()
+		t.Fatal(err)
 	}
 	return body
 }
@@ -193,8 +188,7 @@ func body(t *testing.T, resp *http.Response) []byte {
 func post(t *testing.T, url string) *http.Response {
 	resp, err := http.Post(url, "", nil)
 	if err != nil {
-		t.Error(err)
-		t.FailNow()
+		t.Fatal(err)
 	}
 	return resp
 }
@@ -202,8 +196,7 @@ func post(t *testing.T, url string) *http.Response {
 func game(t *testing.T, buf []byte) Game {
 	var g Game
 	if err := json.Unmarshal(buf, &g); err != nil {
-		t.Error(err)
-		t.FailNow()
+		t.Fatal(err)
 	}
 	return g
 }
