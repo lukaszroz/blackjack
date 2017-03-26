@@ -1,6 +1,8 @@
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 const BUST_LIMIT = 21
 
@@ -16,7 +18,7 @@ func NewScore() Score {
 func (s *Score) AddCard(c Card) {
 	s.value += c.HighValue
 	if c.HighValue != c.LowValue {
-		s.deductions = append(s.deductions, c.HighValue- c.LowValue)
+		s.deductions = append(s.deductions, c.HighValue-c.LowValue)
 	}
 	for s.value > BUST_LIMIT && len(s.deductions) > 0 {
 		last := len(s.deductions) - 1
@@ -27,4 +29,13 @@ func (s *Score) AddCard(c Card) {
 
 func (s Score) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.value)
+}
+
+func (s *Score) UnmarshalJSON(b []byte) error {
+	var i int
+	if err := json.Unmarshal(b, &i); err != nil {
+		return err
+	}
+	s.value = i
+	return nil
 }
