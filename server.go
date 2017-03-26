@@ -75,7 +75,7 @@ func (s *server) gameCtx(next http.Handler) http.Handler {
 		s.RLock()
 		defer s.RUnlock()
 		if err != nil || id >= len(s.games) {
-			http.Error(w, http.StatusText(404), 404)
+			http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 			return
 		}
 		ctx := context.WithValue(r.Context(), game_key, s.games[id])
@@ -95,7 +95,7 @@ func gameAction(w http.ResponseWriter, r *http.Request, handle func(g *Game) err
 	game.Lock()
 	defer game.Unlock()
 	if e := handle(game); e != nil {
-		http.Error(w, e.Error(), 400)
+		http.Error(w, e.Error(), http.StatusBadRequest)
 		return
 	}
 	render.JSON(w, r, game)
