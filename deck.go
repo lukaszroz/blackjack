@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"math/rand"
 	"time"
 )
@@ -35,8 +36,10 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-//TODO: empty deck
 func (deck *Deck) Pull() Card {
+	if len(*deck) < 1 {
+		panic(errors.New("Run out of cards"))
+	}
 	d := *deck
 	i := rand.Intn(len(d))
 	last := len(d) - 1
