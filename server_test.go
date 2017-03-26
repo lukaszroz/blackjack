@@ -112,6 +112,29 @@ func TestStand(t *testing.T) {
 	}
 	assertIsFinished(t, g, true)
 }
+func BenchmarkHitAndStand(b *testing.B) {
+	wins, plays := 0, 0
+	for i := 0; i < b.N; i++ {
+		i := 1
+		for g := play(); !g.HasPlayerWon; g = play() {
+			i++
+		}
+		wins++
+		plays += i
+	}
+	b.Logf("Played %v games, won %v or %.2f%%", plays, wins, float64(wins)/float64(plays)*100)
+}
+func play() Game {
+	ID := getNewGameID(nil)
+	resp := post(nil, fmt.Sprintf("http://%s/games/%d/hit", addr, ID))
+	defer resp.Body.Close()
+	resp = post(nil, fmt.Sprintf("http://%s/games/%d/stand", addr, ID))
+	defer resp.Body.Close()
+	resp = get(nil, fmt.Sprintf("http://%s/games/%d", addr, ID))
+	defer resp.Body.Close()
+	body := body(nil, resp)
+	return game(nil, body)
+}
 func getNewGameID(t *testing.T) int {
 	resp := post(t, "http://"+addr+"/games")
 	defer resp.Body.Close()
