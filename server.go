@@ -52,6 +52,10 @@ func newRouter(s *server) *chi.Mux {
 func (s *server) listGames(w http.ResponseWriter, r *http.Request) {
 	s.RLock()
 	defer s.RUnlock()
+	for _, g := range s.games {
+		g.RLock()
+		defer g.RUnlock()
+	}
 	render.JSON(w, r, s.games)
 }
 
