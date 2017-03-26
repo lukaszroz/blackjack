@@ -145,7 +145,7 @@
 }
 ```
 
-##Errors
+## Errors
 ### Wrong game ID
 `curl -iX GET http://localhost:3333/games/5`
 ```
