@@ -35,6 +35,7 @@ const (
 func newRouter(s *server) *chi.Mux {
 	r := chi.NewRouter()
 	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
 	r.Route("/games", func(r chi.Router) {
 		r.Get("/", s.listGames)
 		r.Post("/", s.createGame)
