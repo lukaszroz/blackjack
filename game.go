@@ -46,13 +46,13 @@ func (g *Game) Stand() error {
 	if g.IsFinished {
 		return errors.New(game_finished)
 	}
-	g.IsFinished = true
 	for g.dealer.Score.value < STAND_LIMIT {
 		g.dealer.AddCard(g.deck.Pull())
 	}
 	//reveal dealer cards
 	g.Dealer = g.dealer
 	//determine game outcome
+	g.IsFinished = true
 	g.IsTie = g.dealer.Score.value == g.Player.Score.value
 	g.HasPlayerWon = g.Player.Score.value > g.dealer.Score.value || g.dealer.IsBust()
 	return nil
