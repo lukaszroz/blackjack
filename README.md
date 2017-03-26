@@ -14,7 +14,31 @@ Simple Blackjack HTTP server with RESTful JSON API written in Go
 `./blackjack`
 
 ## API
+Server listens on port 3333.
+
 [Examples](EXAMPLE.md)
+
+#### List games
+**GET** /games  
+**response** array of games
+#### Create a game
+**POST** /games  
+**response** a game
+#### Retrieve a game
+**GET** /games/:ID  
+**response** a game  
+If there is no game with provided ID  
+**error** 404 Not found
+#### Ask for another card (hit)
+**POST** /games/:ID/hit  
+**response** a game  
+If game is finished  
+**error** 400 Game is finished
+#### Hold your cards and end the game (stand)
+**POST** /games/:ID/stand  
+**response** a game  
+If game is finished  
+**error** 400 Game is finished 
 ### Game JSON
 ```JSON
 {
@@ -52,24 +76,3 @@ Simple Blackjack HTTP server with RESTful JSON API written in Go
   "HasPlayerWon": false
 }
 ```
-#### List games
-**GET** /games  
-**response** array of games
-#### Create a game
-**POST** /games  
-**response** a game
-#### Retrieve a game
-**GET** /games/:ID  
-**response** a game  
-If there is no game with provided ID  
-**error** 404 Not found
-#### Ask for another card (hit)
-**POST** /games/:ID/hit  
-**response** a game  
-If game is finished  
-**error** 400 Game is finished
-#### Hold your cards and end the game (stand)
-**POST** /games/:ID/stand  
-**response** a game  
-If game is finished  
-**error** 400 Game is finished 
